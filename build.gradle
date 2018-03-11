@@ -1,0 +1,61 @@
+buildscript {
+    dependencies { classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.8.RELEASE") }
+    repositories {
+        mavenCentral()
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+group = 'ommm'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	jcenter()
+	mavenCentral()
+}
+
+configurations {
+   provided
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-gradle-plugin'){
+        exclude group: 'ch.qos.logback', module: 'logback-classic'
+    }
+	compile('org.springframework.boot:spring-boot-starter-data-jpa'){
+        exclude group: 'ch.qos.logback', module: 'logback-classic'
+    }
+	compile('org.springframework.boot:spring-boot-starter-data-rest'){
+        exclude group: 'ch.qos.logback', module: 'logback-classic'
+    }
+	compile('org.springframework.boot:spring-boot-starter-web'){
+        exclude group: 'ch.qos.logback', module: 'logback-classic'
+    }
+	runtime('mysql:mysql-connector-java'){
+        exclude group: 'ch.qos.logback', module: 'logback-classic'
+    }
+	compile('org.springframework.boot:spring-boot-starter-test'){
+        exclude group: 'ch.qos.logback', module: 'logback-classic'
+    }
+	compile('org.springframework.boot:spring-boot-starter-log4j2')
+	compile('org.springframework.boot:spring-boot-gradle-plugin:1.5.8.RELEASE')
+}
+
+springBoot {
+    executable = true
+}
+
+bootRepackage {
+    enabled = true
+}
+
+jar {
+    from configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+}
+
+
